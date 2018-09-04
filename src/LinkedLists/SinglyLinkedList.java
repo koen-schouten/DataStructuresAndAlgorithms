@@ -117,6 +117,10 @@ public class SinglyLinkedList<E> {
         size++;
     }
 
+    /**
+     * Voegt een element toe aan de staart van de lijst
+     * @param e het element dat toegevoegd moet worden
+     */
     public void addLast(E e){
         Node<E> newest = new Node<>(e, null);
         if(isEmpty()){
@@ -128,6 +132,10 @@ public class SinglyLinkedList<E> {
         size++;
     }
 
+    /**
+     * Verwijdert het element aan de kop van de lijst
+     * @return het element aan de kop van de lijst
+     */
     public E removeFirst(){
         if(isEmpty()){
             return null;
