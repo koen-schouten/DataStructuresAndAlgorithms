@@ -1,13 +1,12 @@
 package LinkedLists;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SinglyLinkedListTest {
+class DoublyLinkedListTest {
 
-    SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
+    DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
     @Test
     void size() {
         assertEquals(0, list.size());
