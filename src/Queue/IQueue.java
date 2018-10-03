@@ -8,13 +8,13 @@ public interface IQueue<E> {
     int size();
 
     /**
-     * Kijkt of de stack leeg is
-     * @return true wanneer de stack leeg is, anders false
+     * Kijkt of de Queue leeg is
+     * @return true wanneer de Queue leeg is, anders false
      */
     boolean isEmpty();
 
     /**
-     * Voegt een element toe aan de Qeueu
+     * Voegt een element toe aan de Queue
      * @param e het element dat toegevoegd moet worden
      */
     void enqueue(E e);
