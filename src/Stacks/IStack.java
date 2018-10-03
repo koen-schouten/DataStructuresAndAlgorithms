@@ -11,7 +11,7 @@ public interface IStack<E>{
      * Kijkt of de stack leeg is
      * @return true wanneer de stack leeg is, anders false
      */
-    boolean empty();
+    boolean isEmpty();
 
     /**
      * Voegt een element toe aan de stack
