@@ -10,6 +10,9 @@ public class LinkedQueue<E> implements IQueue<E> {
 
     private SinglyLinkedList<E> list = new SinglyLinkedList<E>();
 
+    /**
+     * Constructor
+     */
     public LinkedQueue(){}
 
     @Override
