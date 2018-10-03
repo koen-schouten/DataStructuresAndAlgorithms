@@ -1,6 +1,11 @@
 package Queue;
 
+/**
+ * Implementatie van een queue op basis van een Array
+ * @param <E> de elementen in de queue
+ */
 public class ArrayQueue<E> implements IQueue<E> {
+    //standaard capaciteit
     private static final int CAPACITY = 1000;
 
     //Array die gebruikt wordt om de queue op te slaan
