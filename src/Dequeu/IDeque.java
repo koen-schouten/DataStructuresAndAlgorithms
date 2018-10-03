@@ -16,7 +16,7 @@ public interface IDeque<E> {
      * Geeft het element dat vooraan in de Deque ligt
      * @return E het element dat vooraan in de Deque ligt
      */
-    E fist();
+    E first();
 
     /**
      * Geeft het element dat achteraan in de Deque ligt
