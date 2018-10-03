@@ -31,7 +31,7 @@ public class ArrayStack<E> implements IStack<E> {
         //daarom maken we een array van objecst en casten we die naar de generic
         data = (E[]) new Object[capacity];
     }
-    
+
     @Override
     public int size() {
         return (t - 1);
