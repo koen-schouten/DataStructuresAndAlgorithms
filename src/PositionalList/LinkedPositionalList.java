@@ -1,8 +1,12 @@
 package PositionalList;
 
-public class LinkedPositionalList<E> implements IPositionalList<E> {
+import javax.swing.text.Position;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-    private static class Node<E> implements IPosition<E>{
+public class LinkedPositionalList<E> implements IPositionalList<E>, Iterable {
+
+    private static class Node<E> implements IPosition<E> {
         private E element;
 
         private Node<E> prev;
@@ -10,11 +14,12 @@ public class LinkedPositionalList<E> implements IPositionalList<E> {
 
         /**
          * Constructor voor node
+         *
          * @param e het element dat bij de node hoort
          * @param p de voorgaande posite
          * @param n de volgende positie
          */
-        public Node(E e, Node<E> p, Node<E> n){
+        public Node(E e, Node<E> p, Node<E> n) {
             element = e;
             prev = p;
             next = n;
@@ -22,29 +27,29 @@ public class LinkedPositionalList<E> implements IPositionalList<E> {
 
         @Override
         public E getElement() throws IllegalStateException {
-            if(next == null){
-                throw  new IllegalStateException("Position no longer valid");
+            if (next == null) {
+                throw new IllegalStateException("Position no longer valid");
             }
             return element;
         }
 
-        public Node<E> getPrev(){
+        public Node<E> getPrev() {
             return prev;
         }
 
-        public Node<E> getNext(){
+        public Node<E> getNext() {
             return next;
         }
 
-        public void setElement(E e){
+        public void setElement(E e) {
             element = e;
         }
 
-        public void setPrev(Node<E> p){
+        public void setPrev(Node<E> p) {
             prev = p;
         }
 
-        public void setNext(Node<E> n){
+        public void setNext(Node<E> n) {
             next = n;
         }
     }
@@ -53,23 +58,23 @@ public class LinkedPositionalList<E> implements IPositionalList<E> {
     private Node<E> trailer;
     private int size = 0;
 
-    public LinkedPositionalList(){
-        header = new Node<>(null,null, null);
+    public LinkedPositionalList() {
+        header = new Node<>(null, null, null);
         trailer = new Node<>(null, header, null);
         header.setNext(trailer);
     }
 
-    private Node<E> validate(IPosition<E> p) throws IllegalArgumentException{
-        if(!(p instanceof Node)) throw new IllegalArgumentException("Invalid p");
+    private Node<E> validate(IPosition<E> p) throws IllegalArgumentException {
+        if (!(p instanceof Node)) throw new IllegalArgumentException("Invalid p");
         Node<E> node = (Node<E>) p;
-        if(node.getNext() == null){
+        if (node.getNext() == null) {
             throw new IllegalArgumentException("p is no longer in the list");
         }
         return node;
     }
 
-    private IPosition<E> position(Node<E> node){
-        if(node == header || node == trailer){ //Header en trailer bevatten nooit een element.
+    private IPosition<E> position(Node<E> node) {
+        if (node == header || node == trailer) { //Header en trailer bevatten nooit een element.
             return null;                       //De gebruiker mag deze niet zien
         }
         return node;
@@ -109,12 +114,13 @@ public class LinkedPositionalList<E> implements IPositionalList<E> {
 
     /**
      * Voegt een element toe tussen twee nodes
-     * @param e het nieuwe element
+     *
+     * @param e           het nieuwe element
      * @param predecessor de vorige node
-     * @param successor de volgende node
+     * @param successor   de volgende node
      * @return positie van de nieuwe element
      */
-    private IPosition<E> addBetween(E e, Node<E> predecessor, Node<E> successor){
+    private IPosition<E> addBetween(E e, Node<E> predecessor, Node<E> successor) {
         Node<E> newest = new Node<>(e, predecessor, successor);
         predecessor.setNext(newest);
         successor.setPrev(predecessor);
@@ -166,4 +172,67 @@ public class LinkedPositionalList<E> implements IPositionalList<E> {
         node.setPrev(null);
         return answer;
     }
+
+    private class PositionIterator implements Iterator<IPosition<E>> {
+        private IPosition<E> cursor = first();
+        private IPosition<E> recent = null;
+
+        @Override
+        public boolean hasNext() {
+            return (cursor != null);
+        }
+
+        @Override
+        public IPosition<E> next() throws NoSuchElementException {
+            if(cursor == null){
+                throw new NoSuchElementException("Nothing Left");
+            }
+            recent = cursor;
+            cursor = after(cursor);
+            return recent;
+        }
+
+        public void remove() throws IllegalStateException{
+            if( recent == null){
+                throw new IllegalStateException("Nothing to remove");
+            }
+            LinkedPositionalList.this.remove(recent);
+            recent = null;
+        }
+    }
+
+    private class PositionIterable implements Iterable<IPosition<E>>{
+        @Override
+        public Iterator<IPosition<E>> iterator() {
+            return new PositionIterator();
+        }
+    }
+
+    public Iterable<IPosition<E>> positions(){
+        return new PositionIterable();
+    }
+
+    private class ElementIterator implements Iterator<E>{
+
+        Iterator<IPosition<E>> positionIterator = new PositionIterator();
+
+        @Override
+        public boolean hasNext() {
+            return positionIterator.hasNext();
+        }
+
+        @Override
+        public E next() {
+            return positionIterator.next().getElement();
+        }
+
+        public void remove(){
+            positionIterator.remove();
+        }
+    }
+
+    public Iterator<E> iterator(){
+        return new ElementIterator();
+    }
+
 }
