@@ -173,15 +173,27 @@ public class LinkedPositionalList<E> implements IPositionalList<E>, Iterable {
         return answer;
     }
 
+    /**
+     * Iterator klasse voor de LinkedPositionalList
+     */
     private class PositionIterator implements Iterator<IPosition<E>> {
-        private IPosition<E> cursor = first();
-        private IPosition<E> recent = null;
+        private IPosition<E> cursor = first(); //Positie van de volgende element
+        private IPosition<E> recent = null;    // positie van de vorige element
 
+        /**
+         * Kijkt of er volgende element in de iterator bestaat
+         * @return
+         */
         @Override
         public boolean hasNext() {
             return (cursor != null);
         }
 
+        /**
+         * Geeft de volgende positie in de iterator
+         * @return de volgende positie
+         * @throws NoSuchElementException
+         */
         @Override
         public IPosition<E> next() throws NoSuchElementException {
             if(cursor == null){
@@ -192,6 +204,10 @@ public class LinkedPositionalList<E> implements IPositionalList<E>, Iterable {
             return recent;
         }
 
+        /**
+         * Verwijdert de element die in de vorige next call werd opgeroepen van de iterator
+         * @throws IllegalStateException
+         */
         public void remove() throws IllegalStateException{
             if( recent == null){
                 throw new IllegalStateException("Nothing to remove");
@@ -201,6 +217,9 @@ public class LinkedPositionalList<E> implements IPositionalList<E>, Iterable {
         }
     }
 
+    /**
+     * Klasse die de positionIterator geeft
+     */
     private class PositionIterable implements Iterable<IPosition<E>>{
         @Override
         public Iterator<IPosition<E>> iterator() {
